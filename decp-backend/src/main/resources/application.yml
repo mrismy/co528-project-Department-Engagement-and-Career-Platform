@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/decp_db}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:760581210}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  flyway:
+    enabled: true
+
+app:
+  cors:
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:5173,http://localhost:3000,http://localhost:8081}
+  jwt:
+    secret: ${JWT_SECRET:ryW5ffm7G09LU5a5FHH6qtKRBY3CZzukiZSnWV7hdeP}
+    expiration: ${JWT_EXPIRATION:86400000}
