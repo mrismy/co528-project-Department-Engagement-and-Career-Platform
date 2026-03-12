@@ -1,0 +1,153 @@
+# ============================================================
+# OS / System
+# ============================================================
+.DS_Store
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ============================================================
+# Editors & IDEs
+# ============================================================
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+.factorypath
+*.iml
+*.iws
+*.ipr
+nbproject/
+.netbeans/
+.c9/
+.vs/
+
+# ============================================================
+# Node / npm / yarn / pnpm
+# ============================================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+.yarn/cache/
+.yarn/unplugged/
+.npm/
+.cache/
+.parcel-cache/
+
+# ============================================================
+# Build outputs
+# ============================================================
+dist/
+dist-ssr/
+build/
+out/
+.next/
+.nuxt/
+.svelte-kit/
+
+# ============================================================
+# React Native / Expo / Metro
+# ============================================================
+.expo/
+.expo-shared/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+android/
+ios/
+.metro-health-check*
+
+# ============================================================
+# Java / Maven / Spring Boot
+# ============================================================
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+hs_err_pid*
+replay_pid*
+.mvn/timing.properties
+
+# ============================================================
+# Environment variables & secrets
+# ============================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.cert
+*.crt
+secrets/
+credentials/
+
+# ============================================================
+# Logs & diagnostics
+# ============================================================
+logs/
+*.log
+*.log.*
+crash.log
+tmp/
+temp/
+
+# ============================================================
+# Testing & coverage
+# ============================================================
+coverage/
+.nyc_output/
+*.lcov
+test-results/
+playwright-report/
+
+# ============================================================
+# TypeScript
+# ============================================================
+*.tsbuildinfo
+.tscache/
+
+# ============================================================
+# Vite / bundler caches
+# ============================================================
+.vite/
+
+# ============================================================
+# Docker
+# ============================================================
+.dockerignore
+docker-compose.override.yml
+
+# ============================================================
+# Miscellaneous
+# ============================================================
+*.bak
+*.orig
+*.patch
+*.diff
+*.pid
+*.seed
+*.pid.lock
+.eslintcache
+.stylelintcache
+.prettiercache

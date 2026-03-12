@@ -48,6 +48,31 @@ target/
 !.vscode/launch.json
 !.vscode/extensions.json
 
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Secrets / environment
+.env
+.env.*
+!.env.example
+*.pem
+*.cert
+secrets/
+
+# Logs
+logs/
+*.log.*
+tmp/
+temp/
+
+# Misc
+*.bak
+*.orig
+.mvn/timing.properties
+docker-compose.override.yml
+
 # Spring Boot
 spring-shell.log
 
