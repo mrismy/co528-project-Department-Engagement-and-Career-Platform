@@ -15,6 +15,7 @@ import com.decp.feed.repository.CommentRepository;
 import com.decp.feed.repository.PostLikeRepository;
 import com.decp.feed.repository.PostRepository;
 import com.decp.notification.service.NotificationService;
+import com.decp.notification.service.PushNotificationService;
 import com.decp.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class PostService {
     private final CommentRepository commentRepository;
     private final SecurityUtils securityUtils;
     private final NotificationService notificationService;
+    private final PushNotificationService pushNotificationService;
 
     @Transactional
     public PostResponse createPost(CreatePostRequest request) {
@@ -75,10 +77,12 @@ public class PostService {
             like.setPost(post);
             like.setUser(currentUser);
             postLikeRepository.save(like);
-            if (!post.getUser().getId().equals(currentUser.getId())) {
-                notificationService.create(post.getUser(), NotificationType.LIKE,
-                        "New like", currentUser.getFullName() + " liked your post", post.getId());
-            }
+        if (!post.getUser().getId().equals(currentUser.getId())) {
+            notificationService.create(post.getUser(), NotificationType.LIKE,
+                    "New like", currentUser.getFullName() + " liked your post", post.getId());
+            pushNotificationService.sendToUser(post.getUser(), "New like 👍",
+                    currentUser.getFullName() + " liked your post");
+        }
         }
         return mapToResponse(post, currentUser, false);
     }
@@ -97,9 +101,23 @@ public class PostService {
         if (!post.getUser().getId().equals(currentUser.getId())) {
             notificationService.create(post.getUser(), NotificationType.COMMENT,
                     "New comment", currentUser.getFullName() + " commented on your post", post.getId());
+            pushNotificationService.sendToUser(post.getUser(), "New comment 💬",
+                    currentUser.getFullName() + " commented on your post");
         }
 
         return mapComment(saved);
+    }
+
+    @Transactional
+    public void deletePost(Long postId) {
+        User currentUser = securityUtils.getCurrentUser();
+        Post post = getPost(postId);
+        if (!post.getUser().getId().equals(currentUser.getId())) {
+            throw new BadRequestException("You can only delete your own posts");
+        }
+        commentRepository.deleteAll(commentRepository.findByPostOrderByCreatedAtAsc(post));
+        postLikeRepository.deleteByPostAndUser(post, currentUser);
+        postRepository.delete(post);
     }
 
     private Post getPost(Long postId) {

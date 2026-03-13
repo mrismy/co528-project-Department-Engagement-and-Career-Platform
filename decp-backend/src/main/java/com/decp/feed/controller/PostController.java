@@ -7,6 +7,7 @@ import com.decp.feed.dto.PostResponse;
 import com.decp.feed.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,5 +37,11 @@ public class PostController {
     @PostMapping("/{postId}/comments")
     public CommentResponse addComment(@PathVariable Long postId, @Valid @RequestBody CreateCommentRequest request) {
         return postService.addComment(postId, request);
+    }
+
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long postId) {
+        postService.deletePost(postId);
+        return ResponseEntity.noContent().build();
     }
 }

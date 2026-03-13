@@ -132,3 +132,16 @@ export interface NotificationResponse {
   readStatus: boolean
   createdAt: string
 }
+
+export interface AnalyticsOverviewResponse {
+  totalUsers: number
+  activeUsers: number
+  totalPosts: number
+  totalJobs: number
+  totalApplications: number
+  totalEvents: number
+  totalRsvps: number
+  totalResearchProjects: number
+  totalConversations: number
+  totalNotifications: number
+}

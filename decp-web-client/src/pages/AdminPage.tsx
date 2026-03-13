@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from 'react'
-import { deactivateUser, deletePostByAdmin, getAnalyticsOverview } from '../api/admin'
+import { deactivateUser, deletePostByAdmin, getAnalyticsOverview, getTopPosts, TopPostEntry } from '../api/admin'
 import ErrorBanner from '../components/ErrorBanner'
 import PageHeader from '../components/PageHeader'
 import StatCard from '../components/StatCard'
@@ -21,6 +21,7 @@ const emptyStats: AnalyticsOverviewResponse = {
 
 export default function AdminPage() {
   const [stats, setStats] = useState<AnalyticsOverviewResponse>(emptyStats)
+  const [topPosts, setTopPosts] = useState<TopPostEntry[]>([])
   const [error, setError] = useState<string | null>(null)
   const [status, setStatus] = useState<string | null>(null)
   const [userId, setUserId] = useState('')
@@ -28,15 +29,15 @@ export default function AdminPage() {
 
   async function load() {
     try {
-      setStats(await getAnalyticsOverview())
+      const [overview, posts] = await Promise.all([getAnalyticsOverview(), getTopPosts(5)])
+      setStats(overview)
+      setTopPosts(posts)
     } catch (err) {
       setError(getApiError(err))
     }
   }
 
-  useEffect(() => {
-    void load()
-  }, [])
+  useEffect(() => { void load() }, [])
 
   async function onDeactivate(e: FormEvent) {
     e.preventDefault()
@@ -70,6 +71,7 @@ export default function AdminPage() {
       <ErrorBanner message={error} />
       {status ? <div className="success-banner">{status}</div> : null}
 
+      {/* Stat cards */}
       <div className="stats-grid">
         <StatCard label="Total users" value={stats.totalUsers} />
         <StatCard label="Active users" value={stats.activeUsers} />
@@ -83,12 +85,38 @@ export default function AdminPage() {
         <StatCard label="Notifications" value={stats.totalNotifications} />
       </div>
 
+      {/* Top posts table */}
+      {topPosts.length > 0 && (
+        <div className="card">
+          <h3>🔥 Top Posts by Likes</h3>
+          <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: 12 }}>
+            <thead>
+              <tr style={{ textAlign: 'left', borderBottom: '1px solid #e4e7ec' }}>
+                <th style={{ padding: '8px 12px', color: '#667085', fontWeight: 600 }}>Author</th>
+                <th style={{ padding: '8px 12px', color: '#667085', fontWeight: 600 }}>Content</th>
+                <th style={{ padding: '8px 12px', color: '#667085', fontWeight: 600 }}>❤️ Likes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {topPosts.map(p => (
+                <tr key={p.postId} style={{ borderBottom: '1px solid #f2f4f7' }}>
+                  <td style={{ padding: '8px 12px', fontWeight: 600 }}>{p.authorName}</td>
+                  <td style={{ padding: '8px 12px', color: '#344054' }}>{p.content || '—'}</td>
+                  <td style={{ padding: '8px 12px', fontWeight: 700, color: '#1d4ed8' }}>{p.likeCount}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {/* Moderation controls */}
       <div className="two-pane">
         <form className="card form-grid" onSubmit={onDeactivate}>
           <h3>Deactivate user</h3>
           <label>
             User ID
-            <input value={userId} onChange={(e) => setUserId(e.target.value)} required />
+            <input value={userId} onChange={e => setUserId(e.target.value)} required />
           </label>
           <button className="primary-btn">Deactivate</button>
         </form>
@@ -97,7 +125,7 @@ export default function AdminPage() {
           <h3>Delete post</h3>
           <label>
             Post ID
-            <input value={postId} onChange={(e) => setPostId(e.target.value)} required />
+            <input value={postId} onChange={e => setPostId(e.target.value)} required />
           </label>
           <button className="primary-btn danger-btn">Delete post</button>
         </form>

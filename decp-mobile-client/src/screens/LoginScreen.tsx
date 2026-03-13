@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Pressable, Text } from 'react-native'
+import { Pressable, ScrollView, Text } from 'react-native'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Screen } from '../components/Screen'
 import { Button, Card, ErrorText, Field, Heading, Label, SubtleText } from '../components/UI'
@@ -26,7 +26,13 @@ export function LoginScreen({ navigation }: Props) {
       setError(null)
       await login(email.trim(), password)
     } catch (e: any) {
-      setError(e?.response?.data?.message || 'Login failed')
+      // Network error → use the actionable message set by our Axios interceptor
+      // Server error   → use the message from the response body
+      const msg =
+        e?.response?.data?.message ||
+        e?.message ||
+        'Login failed. Please try again.'
+      setError(msg)
     } finally {
       setLoading(false)
     }
@@ -34,19 +40,21 @@ export function LoginScreen({ navigation }: Props) {
 
   return (
     <Screen>
-      <Card>
-        <Heading>DECP Mobile</Heading>
-        <SubtleText>Login to the department engagement platform.</SubtleText>
-        <Label>Email</Label>
-        <Field value={email} onChangeText={setEmail} placeholder="Email" autoCapitalize="none" keyboardType="email-address" />
-        <Label>Password</Label>
-        <Field value={password} onChangeText={setPassword} placeholder="Password" secureTextEntry />
-        <ErrorText message={error} />
-        <Button title="Login" onPress={handleLogin} loading={loading} />
-        <Pressable onPress={() => navigation.navigate('Register')}>
-          <Text style={{ color: '#1d4ed8', fontWeight: '600' }}>No account? Register</Text>
-        </Pressable>
-      </Card>
+      <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}>
+        <Card>
+          <Heading>DECP Mobile</Heading>
+          <SubtleText>Login to the department engagement platform.</SubtleText>
+          <Label>Email</Label>
+          <Field value={email} onChangeText={setEmail} placeholder="Email" autoCapitalize="none" keyboardType="email-address" />
+          <Label>Password</Label>
+          <Field value={password} onChangeText={setPassword} placeholder="Password" secureTextEntry />
+          <ErrorText message={error} />
+          <Button title="Login" onPress={handleLogin} loading={loading} />
+          <Pressable onPress={() => navigation.navigate('Register')}>
+            <Text style={{ color: '#1d4ed8', fontWeight: '600', textAlign: 'center' }}>No account? Register</Text>
+          </Pressable>
+        </Card>
+      </ScrollView>
     </Screen>
   )
 }

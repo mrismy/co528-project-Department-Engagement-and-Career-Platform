@@ -32,6 +32,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                         "/api/auth/**",
+                        "/api/media/**",   // public media serving & upload (auth checked in service)
                         "/swagger-ui/**",
                         "/swagger-ui.html",
                         "/v3/api-docs/**"

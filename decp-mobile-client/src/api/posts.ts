@@ -20,3 +20,7 @@ export async function addComment(postId: number, content: string) {
   const { data } = await api.post<CommentResponse>(`/api/posts/${postId}/comments`, { content })
   return data
 }
+
+export async function deletePost(postId: number) {
+  await api.delete(`/api/posts/${postId}`)
+}
