@@ -6,7 +6,8 @@ Thumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 *.lnk
-
+.env
+.env.example
 # ============================================================
 # Editors & IDEs
 # ============================================================
@@ -31,7 +32,11 @@ nbproject/
 .netbeans/
 .c9/
 .vs/
-
+DOCUMENTATION.md
+ARCHITECTURE.md
+~WRL1096.tmp
+~$CP_Documentation.docx
+DECP_Documentation.docx
 # ============================================================
 # Node / npm / yarn / pnpm
 # ============================================================
