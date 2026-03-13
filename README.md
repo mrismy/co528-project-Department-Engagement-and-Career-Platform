@@ -53,7 +53,7 @@ Three independently runnable clients share one backend REST API secured with JWT
 
 ## ⚙️ Local Setup
 
-### 1 — Start the Database
+### 1 - Start the Database
 
 ```bash
 cd decp-backend
@@ -65,7 +65,7 @@ Flyway will auto-run all migrations (`V1__init.sql`, `V2__add_push_tokens.sql`) 
 
 ---
 
-### 2 — Run the Backend API
+### 2 - Run the Backend API
 
 ```bash
 cd decp-backend
@@ -88,7 +88,7 @@ mvn spring-boot:run
 
 ---
 
-### 3 — Run the Web Client
+### 3 - Run the Web Client
 
 ```bash
 cd decp-web-client
@@ -100,7 +100,7 @@ npm run dev
 
 ---
 
-### 4 — Run the Mobile Client (Expo Go)
+### 4 - Run the Mobile Client (Expo Go)
 
 ```bash
 cd decp-mobile-client
@@ -135,7 +135,7 @@ Scan the QR code with **Expo Go** on your Android or iOS device.
 
 ---
 
-### 5 — Run Tests
+### 5 - Run Tests
 
 ```bash
 cd decp-backend
