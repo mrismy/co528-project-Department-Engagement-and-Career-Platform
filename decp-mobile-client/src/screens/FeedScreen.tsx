@@ -18,7 +18,7 @@ export function FeedScreen() {
     try {
       setError(null)
       const data = await postsApi.getPosts()
-      setPosts(data)
+      setPosts(Array.isArray(data) ? data : [])
     } catch (e: any) {
       setError(e?.response?.data?.message || 'Failed to load posts')
     }
@@ -53,6 +53,8 @@ export function FeedScreen() {
     }
   }
 
+  const postList = Array.isArray(posts) ? posts : []
+
   return (
     <Screen refreshing={refreshing} onRefresh={handleRefresh}>
       <Card>
@@ -62,8 +64,8 @@ export function FeedScreen() {
         <Button title="Create post" onPress={handleCreate} loading={loading} />
         <ErrorText message={error} />
       </Card>
-      {posts.length === 0 ? <EmptyState title="No posts yet" subtitle="Create the first update for the department community." /> : null}
-      {posts.map(post => (
+      {postList.length === 0 ? <EmptyState title="No posts yet" subtitle="Create the first update for the department community." /> : null}
+      {postList.map(post => (
         <PostCard
           key={post.id}
           post={post}
